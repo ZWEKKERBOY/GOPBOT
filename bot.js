@@ -19,30 +19,14 @@ require("colors");
 //Initialise the actual client
 const client = new Discord.Client();
 
-client.once("ready", () => {
-    //Notifies the host that the shard is ready
-    console.log(`Shard #${process.pid} `.cyan + random(["reporting!", "is awaiting orders from the union!", "has finally sobered up and is ready to go!"]).cyan);
-    //Deserializes the database and loads it into memory
-    db.read();
-    //Sets the app variable
-    app = {
-        "client": client,
-        "config": config,
-        "modules": fs.readdirSync("commands").map(e => e.split(".")[0]), //An array of modules/commands without the file extensions
-        "db": db //The lowdb
-    };
-    //Sets the activity
-    client.user.setActivity(`${config.prefix} help`, { type: "WATCHING" });
-})
-
-//When a message is received
-client.on("message", msg => {
+//Command processing
+function processCommand(msg) {
     //Split the message into an array of words
     let messageChunks = msg.content.split(" ");
     //If the message starts with the set prefix and is not sent by a bot
     if (messageChunks[0].toLowerCase() === config.prefix && !msg.author.bot) {
         //Check if the second word is a command
-        let requestedCommand = msg.content.substring(config.prefix.length);
+        let requestedCommand = messageChunks[1].toLowerCase();
         //Delete the two first chunks so we are left with an array with arguments
         messageChunks.splice(0, 2);
         if (~app.modules.indexOf(requestedCommand)) {
@@ -58,7 +42,7 @@ client.on("message", msg => {
             } else if (~mod.tags.indexOf("owner") && !~config.owners.indexOf(msg.author.id)) {
                 //If an owner command was executed by an western spy
                 return msg.channel.send("This command is only for our glorious leader Stalin, now run away you western spy!");
-            } else if (messageChunks.length<mod.arguments.length){
+            } else if (messageChunks.length < mod.arguments.length) {
                 //If not enough arguments were provided
                 return msg.channel.send("You didn't provide enough parameters!")
             };
@@ -67,7 +51,30 @@ client.on("message", msg => {
             mod.run(msg, messageChunks, app);
         }
     }
+}
+
+
+
+client.once("ready", () => {
+    //Notifies the host that the shard is ready
+    console.log(`Shard #${process.pid} `.cyan + random(["reporting!", "is awaiting orders from the union!", "has finally sobered up and is ready to go!"]).cyan);
+    //Deserializes the database and loads it into memory
+    db.read();
+    //Sets the app variable
+    app = {
+        "client": client,
+        "config": config,
+        "modules": fs.readdirSync("commands").map(e => e.split(".")[0]), //An array of modules/commands without the file extensions
+        "db": db //The lowdb
+    };
+    //Sets the activity
+    client.user.setActivity(`${config.prefix.toUpperCase()} help`, { type: "WATCHING" });
 })
+
+//When a message is received
+client.on("message", m => processCommand(m));
+//When a message is edited
+client.on("messageUpdate", (_o, n) => processCommand(n));
 
 //Log in with the token specified in the config
 client.login(config.token);
