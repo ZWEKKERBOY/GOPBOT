@@ -1,0 +1,14 @@
+//Change the details below, remove this comment and rename the file to config.json
+{
+    "token": "The bot token",
+    "clientid":"The account ID of the bot",
+    "owners": [
+        239653545270312960,
+        377981578716119050,
+        237979016991080448,
+        335020378407829506
+    ],
+    "shards": 2,
+    "prefix": "gop",
+    "msgColor":14480450
+}

@@ -1,8 +1,8 @@
 //Requirements
 const Discord = require("discord.js");
+const fs = require("fs");
 const config = require("./config.json");
 const random = require("randomize");
-const fs = require("fs");
 //This variable will be used throughout the entire app and its modules
 var app;
 //Database setup

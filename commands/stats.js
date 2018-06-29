@@ -10,7 +10,11 @@ module.exports = {
                     fields: [
                         {
                             "name": "Latency",
-                            "value": `${app.client.ping}ms`
+                            "value": `${app.client.ping.toFixed()}ms`
+                        },
+                        {
+                            "name": "WS status code",
+                            "value": app.client.status
                         },
                         {
                             "name": "Server IP",
@@ -21,8 +25,8 @@ module.exports = {
                             "value": ms(app.client.uptime, { long: true })
                         },
                         {
-                            "name":"Shards",
-                            "value":app.config.shards
+                            "name": "Shards",
+                            "value": app.config.shards
                         }
                     ]
                 }
