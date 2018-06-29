@@ -8,5 +8,6 @@
         335020378407829506
     ],
     "shards": 2,
-    "prefix": "gopbotptb"
+    "prefix": "gopbotptb",
+    "msgColor":14480450
 }

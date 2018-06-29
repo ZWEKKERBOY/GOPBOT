@@ -9,7 +9,7 @@ module.exports = {
                 //Require the module
                 let mod = require(`./${modName}.js`);
                 //Append a description of the command
-                helpBody += `\`${app.config.prefix.toUpperCase()} ${modName.toUpperCase()}\` ${mod.arguments.length ? "[" + mod.arguments.toString() + "]" : ""} - ${mod.description}`
+                helpBody += `\`${app.config.prefix.toUpperCase()} ${modName.toUpperCase()}\` ${mod.arguments.length ? "[" + mod.arguments.toString() + "]" : ""} - ${mod.description}\n`
             });
             //Send the actual embed
             msg.author.send({
